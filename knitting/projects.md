@@ -1,18 +1,18 @@
-## Cozy Cable Sweater
+## Cable Sweater
 
-description: A chunky Aran-weight pullover with classic cable panels down the front.
-images: photos/cable-sweater
-
----
-
-## Colorwork Mittens
-
-description: Stranded colorwork mittens in a snowflake motif, worked in the round.
-images: photos/colorwork-mittens
+description: TODO
+images: images/cable-sweater
 
 ---
 
-## Lace Shawl
+## Brown Sweater
 
-description: A crescent shawl with a delicate leaf border, blocked to open up the lace.
-images: photos/lace-shawl
+description: TODO
+images: images/brown-sweater
+
+---
+
+## Shawl
+
+description: TODO
+images: images/shawl
