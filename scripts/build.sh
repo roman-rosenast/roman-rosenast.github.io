@@ -29,19 +29,39 @@ html_escape() {
   echo "$1" | sed 's/&/\&amp;/g; s/</\&lt;/g; s/>/\&gt;/g; s/"/\&quot;/g'
 }
 
-# ── Parse blocks and build project HTML ───────────────────────────────────────
+# macOS-compatible relative path: relative_path <target> <base>
+relative_path() {
+  python3 -c "import os,sys; print(os.path.relpath(sys.argv[1], sys.argv[2]))" "$1" "$2"
+}
+
+# ── Split projects.md into per-block temp files ───────────────────────────────
+# Use awk to write each block to a numbered temp file, then process them one
+# by one. This avoids the "while read -r reads lines not blocks" problem.
+
+TMPDIR_BLOCKS="$(mktemp -d)"
+trap 'rm -rf "$TMPDIR_BLOCKS"' EXIT
+
+awk '
+  BEGIN { block=1 }
+  /^---$/ { block++; next }
+  { print >> ("'"$TMPDIR_BLOCKS"'/" block ".txt") }
+' "$PROJECTS_FILE"
+
+# ── Parse each block file and build project HTML ──────────────────────────────
 
 projects_html=""
 project_count=0
-block_num=0
 
-while IFS= read -r block; do
-  [[ -z "$(echo "$block" | tr -d '[:space:]')" ]] && continue
-  block_num=$((block_num + 1))
+for block_file in $(ls "$TMPDIR_BLOCKS"/*.txt 2>/dev/null | sort -t/ -k3 -n); do
+  block_num=$(basename "$block_file" .txt)
 
-  title=$(echo "$block" | grep -m1 '^## ' | sed 's/^## *//' | xargs)
-  desc=$(echo "$block"  | grep -m1 '^description:' | sed 's/^description: *//' | xargs)
-  img_path=$(echo "$block" | grep -m1 '^images:' | sed 's/^images: *//' | xargs)
+  # Skip blank blocks
+  content=$(tr -d '[:space:]' < "$block_file")
+  [[ -z "$content" ]] && continue
+
+  title=$(grep -m1 '^## '          "$block_file" | sed 's/^## *//'          | xargs) || title=""
+  desc=$(grep -m1  '^description:' "$block_file" | sed 's/^description: *//' | xargs) || desc=""
+  img_path=$(grep -m1 '^images:'   "$block_file" | sed 's/^images: *//'      | xargs) || img_path=""
 
   if [[ -z "$title" || -z "$desc" || -z "$img_path" ]]; then
     echo "ERROR: Block $block_num is missing required fields (## title, description:, images:)."
@@ -56,15 +76,16 @@ while IFS= read -r block; do
   # Build image cards
   img_cards=""
   if [[ -d "$abs_img" ]]; then
-    while IFS= read -r -d '' imgfile; do
-      rel=$(realpath --relative-to="$SITE_ROOT" "$imgfile")
+    while IFS= read -r imgfile; do
+      [[ -z "$imgfile" ]] && continue
+      rel=$(relative_path "$imgfile" "$SITE_ROOT") || rel="$imgfile"
       img_cards+="        <div class=\"img-card\">"$'\n'
       img_cards+="          <img src=\"$rel\" alt=\"$safe_title\" loading=\"lazy\" />"$'\n'
       img_cards+="        </div>"$'\n'
     done < <(
       for ext in $SUPPORTED_EXTS; do
-        find "$abs_img" -maxdepth 1 -iname "*.${ext}" -print0
-      done | sort -z
+        find "$abs_img" -maxdepth 1 -iname "*.${ext}" 2>/dev/null || true
+      done | sort
     )
   fi
 
@@ -79,12 +100,11 @@ while IFS= read -r block; do
   projects_html+="      <p class=\"desc\">$safe_desc</p>"$'\n'
   projects_html+="    </div>"$'\n'
   projects_html+="    <div class=\"scroll-track\" role=\"list\" aria-label=\"$safe_title photos\">"$'\n'
-  projects_html+="$img_cards"
+  projects_html+="${img_cards}"
   projects_html+="    </div>"$'\n'
   projects_html+="  </section>"$'\n'$'\n'
   project_count=$((project_count + 1))
-
-done < <(awk 'BEGIN{b=""} /^---$/{print b; b=""; next} {b=b"\n"$0} END{if(b~/[^[:space:]]/) print b}' "$PROJECTS_FILE")
+done
 
 YEAR=$(date +%Y)
 
@@ -262,4 +282,4 @@ ${projects_html}</main>
 </html>
 HTMLEOF
 
-echo "Built $project_count project$([ "$project_count" -eq 1 ] && echo "" || echo "s") → $OUTPUT_FILE"
+echo "Built $project_count project$([ "$project_count" -eq 1 ] && echo "" || echo "s") -> $OUTPUT_FILE"

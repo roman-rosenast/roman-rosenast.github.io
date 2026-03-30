@@ -1,18 +1,18 @@
 ## Cable Sweater
 
 description: TODO
-images: images/cable-sweater
+images: photos/cable-sweater
 
 ---
 
 ## Brown Sweater
 
 description: TODO
-images: images/brown-sweater
+images: photos/brown-sweater
 
 ---
 
 ## Shawl
 
 description: TODO
-images: images/shawl
+images: photos/shawl

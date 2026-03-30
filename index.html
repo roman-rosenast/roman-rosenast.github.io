@@ -1,12 +1,262 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Roman's Personal Website</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Knitting Projects</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;1,8..60,300&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --cream:  #f5f0e8;
+      --warm:   #ede6d6;
+      --sand:   #c9b99a;
+      --ink:    #2c2318;
+      --muted:  #7a6a58;
+      --accent: #7a3e2a;
+      --card-r: 12px;
+      --gap:    1.5rem;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--cream);
+      color: var(--ink);
+      font-family: 'Source Serif 4', Georgia, serif;
+      font-weight: 300;
+      line-height: 1.65;
+      min-height: 100vh;
+    }
+
+    header {
+      padding: 4rem 2rem 2.5rem;
+      text-align: center;
+      border-bottom: 1px solid var(--sand);
+      background: var(--warm);
+    }
+    header h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.2rem, 5vw, 3.8rem);
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      color: var(--ink);
+      margin-bottom: 0.4rem;
+    }
+    header .tagline {
+      font-style: italic;
+      color: var(--muted);
+      font-size: 1.05rem;
+    }
+
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 3rem 2rem 5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 4rem;
+    }
+
+    .project-header {
+      margin-bottom: 1.2rem;
+      padding-bottom: 0.8rem;
+      border-bottom: 1px solid var(--sand);
+    }
+    .project-header h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.4rem, 3vw, 2rem);
+      font-weight: 600;
+      color: var(--accent);
+      margin-bottom: 0.25rem;
+    }
+    .project-header .desc {
+      color: var(--muted);
+      font-size: 0.95rem;
+      max-width: 65ch;
+    }
+
+    .scroll-track {
+      display: flex;
+      gap: var(--gap);
+      overflow-x: auto;
+      overflow-y: hidden;
+      padding-bottom: 0.75rem;
+      scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
+      cursor: grab;
+    }
+    .scroll-track:active { cursor: grabbing; }
+    .scroll-track::-webkit-scrollbar { height: 5px; }
+    .scroll-track::-webkit-scrollbar-track { background: var(--warm); border-radius: 99px; }
+    .scroll-track::-webkit-scrollbar-thumb { background: var(--sand); border-radius: 99px; }
+
+    .img-card {
+      flex: 0 0 auto;
+      width: 280px;
+      height: 340px;
+      border-radius: var(--card-r);
+      overflow: hidden;
+      scroll-snap-align: start;
+      background: var(--warm);
+      border: 1px solid var(--sand);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .img-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 24px rgba(44,35,24,0.12);
+    }
+    .img-card img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .img-empty {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--muted);
+      font-style: italic;
+      font-size: 0.9rem;
+    }
+
+    footer {
+      text-align: center;
+      padding: 1.5rem;
+      font-size: 0.8rem;
+      color: var(--sand);
+      border-top: 1px solid var(--warm);
+    }
+
+    @media (max-width: 600px) {
+      main { padding: 2rem 1rem 4rem; gap: 3rem; }
+      .img-card { width: 220px; height: 270px; }
+    }
+  </style>
 </head>
 <body>
-    <h1>Roman's Personal Website</h1>
-    <p>More to come shortly :)</p>
+
+<header>
+  <h1>Knitting Projects</h1>
+  <p class="tagline">a collection of things made with yarn &amp; patience</p>
+</header>
+
+<main>
+  <section class="project" id="cable-sweater">
+    <div class="project-header">
+      <h2>Cable Sweater</h2>
+      <p class="desc">TODO</p>
+    </div>
+    <div class="scroll-track" role="list" aria-label="Cable Sweater photos">
+        <div class="img-card">
+          <img src="knitting/photos/cable-sweater/376F6BAC-7D79-4E2A-9325-BD36494F0FCB.jpeg" alt="Cable Sweater" loading="lazy" />
+        </div>
+        <div class="img-card">
+          <img src="knitting/photos/cable-sweater/3E24DDD9-C581-4F73-9B57-6A517DEF6B78.jpeg" alt="Cable Sweater" loading="lazy" />
+        </div>
+        <div class="img-card">
+          <img src="knitting/photos/cable-sweater/42C922EF-F752-4F63-BFB3-E6CDD2B58080.jpeg" alt="Cable Sweater" loading="lazy" />
+        </div>
+        <div class="img-card">
+          <img src="knitting/photos/cable-sweater/4FABBA93-BB36-4526-8874-CA6E95610DB2.jpeg" alt="Cable Sweater" loading="lazy" />
+        </div>
+        <div class="img-card">
+          <img src="knitting/photos/cable-sweater/62445CE3-1E77-4BF2-9782-075A40AE8BB8.jpeg" alt="Cable Sweater" loading="lazy" />
+        </div>
+        <div class="img-card">
+          <img src="knitting/photos/cable-sweater/B16E2AC1-1A69-48ED-97EC-0E06BE0336F3.jpeg" alt="Cable Sweater" loading="lazy" />
+        </div>
+        <div class="img-card">
+          <img src="knitting/photos/cable-sweater/B51C7505-678E-47F2-9D84-7FE42AD1A551.jpeg" alt="Cable Sweater" loading="lazy" />
+        </div>
+        <div class="img-card">
+          <img src="knitting/photos/cable-sweater/D6E128F6-3EA1-4217-90F7-489B87546F9A.jpeg" alt="Cable Sweater" loading="lazy" />
+        </div>
+        <div class="img-card">
+          <img src="knitting/photos/cable-sweater/D846DB48-41E1-4A5A-9CE6-F73A56128B62.jpeg" alt="Cable Sweater" loading="lazy" />
+        </div>
+    </div>
+  </section>
+
+  <section class="project" id="brown-sweater">
+    <div class="project-header">
+      <h2>Brown Sweater</h2>
+      <p class="desc">TODO</p>
+    </div>
+    <div class="scroll-track" role="list" aria-label="Brown Sweater photos">
+        <div class="img-card">
+          <img src="knitting/photos/brown-sweater/3D0DB9DE-DFCA-4FA0-A234-6D09087C2AE6.jpeg" alt="Brown Sweater" loading="lazy" />
+        </div>
+        <div class="img-card">
+          <img src="knitting/photos/brown-sweater/42545EFE-A32F-45DA-91D5-D16AA610DCD7.jpeg" alt="Brown Sweater" loading="lazy" />
+        </div>
+        <div class="img-card">
+          <img src="knitting/photos/brown-sweater/794C367D-C579-47DE-8FCF-521CB47908B5.jpeg" alt="Brown Sweater" loading="lazy" />
+        </div>
+        <div class="img-card">
+          <img src="knitting/photos/brown-sweater/A51EA38E-FC06-4D6A-B37E-B504D2DCE504.jpeg" alt="Brown Sweater" loading="lazy" />
+        </div>
+        <div class="img-card">
+          <img src="knitting/photos/brown-sweater/C5E5550D-C8A2-4FA1-A4D0-2DAF7BAFB5FB.jpeg" alt="Brown Sweater" loading="lazy" />
+        </div>
+    </div>
+  </section>
+
+  <section class="project" id="shawl">
+    <div class="project-header">
+      <h2>Shawl</h2>
+      <p class="desc">TODO</p>
+    </div>
+    <div class="scroll-track" role="list" aria-label="Shawl photos">
+        <div class="img-card">
+          <img src="knitting/photos/shawl/00EEA2AD-B087-4C5D-B929-C73C8E1E1FFB.jpeg" alt="Shawl" loading="lazy" />
+        </div>
+        <div class="img-card">
+          <img src="knitting/photos/shawl/19E58F89-96BE-4455-92E6-8BE952F4EE8D.jpeg" alt="Shawl" loading="lazy" />
+        </div>
+        <div class="img-card">
+          <img src="knitting/photos/shawl/9D8370EC-108D-408C-BC4A-6298F0586A68.jpeg" alt="Shawl" loading="lazy" />
+        </div>
+        <div class="img-card">
+          <img src="knitting/photos/shawl/BD14E8D8-1B0D-4FBA-867C-68F3EA463ED7.jpeg" alt="Shawl" loading="lazy" />
+        </div>
+        <div class="img-card">
+          <img src="knitting/photos/shawl/C141CDFA-51A9-40A5-A68C-97D4B39E1090.jpeg" alt="Shawl" loading="lazy" />
+        </div>
+        <div class="img-card">
+          <img src="knitting/photos/shawl/CE7D25FB-4E49-4537-B68F-1C3C7743365C.jpeg" alt="Shawl" loading="lazy" />
+        </div>
+        <div class="img-card">
+          <img src="knitting/photos/shawl/F2108166-5E3A-43F1-83E8-9FC163BB18F1.jpeg" alt="Shawl" loading="lazy" />
+        </div>
+        <div class="img-card">
+          <img src="knitting/photos/shawl/F2220469-ADB1-4429-B732-410EC6AD11FB.jpeg" alt="Shawl" loading="lazy" />
+        </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  &copy; 2026 &mdash; built from projects.md
+</footer>
+
+<script>
+  document.querySelectorAll('.scroll-track').forEach(track => {
+    let isDown = false, startX, scrollLeft;
+    track.addEventListener('mousedown', e => {
+      isDown = true;
+      startX = e.pageX - track.offsetLeft;
+      scrollLeft = track.scrollLeft;
+    });
+    document.addEventListener('mouseup', () => { isDown = false; });
+    track.addEventListener('mousemove', e => {
+      if (!isDown) return;
+      e.preventDefault();
+      const x = e.pageX - track.offsetLeft;
+      track.scrollLeft = scrollLeft - (x - startX);
+    });
+  });
+</script>
+
 </body>
 </html>
