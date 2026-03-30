@@ -63,8 +63,8 @@ for block_file in $(ls "$TMPDIR_BLOCKS"/*.txt 2>/dev/null | sort -t/ -k3 -n); do
   desc=$(grep -m1  '^description:' "$block_file" | sed 's/^description: *//' | xargs) || desc=""
   img_path=$(grep -m1 '^images:'   "$block_file" | sed 's/^images: *//'      | xargs) || img_path=""
 
-  if [[ -z "$title" || -z "$desc" || -z "$img_path" ]]; then
-    echo "ERROR: Block $block_num is missing required fields (## title, description:, images:)."
+  if [[ -z "$title" || -z "$img_path" ]]; then
+    echo "ERROR: Block $block_num is missing required fields (## title, images:)."
     exit 1
   fi
 
@@ -97,7 +97,7 @@ for block_file in $(ls "$TMPDIR_BLOCKS"/*.txt 2>/dev/null | sort -t/ -k3 -n); do
   projects_html+="  <section class=\"project\" id=\"$id\">"$'\n'
   projects_html+="    <div class=\"project-header\">"$'\n'
   projects_html+="      <h2>$safe_title</h2>"$'\n'
-  projects_html+="      <p class=\"desc\">$safe_desc</p>"$'\n'
+  [[ -n "$desc" ]] && projects_html+="      <p class=\"desc\">$safe_desc</p>"$'\n'
   projects_html+="    </div>"$'\n'
   projects_html+="    <div class=\"scroll-track\" role=\"list\" aria-label=\"$safe_title photos\">"$'\n'
   projects_html+="${img_cards}"
@@ -222,7 +222,7 @@ cat > "$OUTPUT_FILE" <<HTMLEOF
       transform: translateY(-3px);
       box-shadow: 0 8px 24px rgba(44,35,24,0.12);
     }
-    .img-card img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .img-card img { width: 100%; height: 100%; object-fit: cover; display: block; cursor: zoom-in; }
     .img-empty {
       display: flex;
       align-items: center;
@@ -232,35 +232,91 @@ cat > "$OUTPUT_FILE" <<HTMLEOF
       font-size: 0.9rem;
     }
 
-    footer {
-      text-align: center;
-      padding: 1.5rem;
-      font-size: 0.8rem;
-      color: var(--sand);
-      border-top: 1px solid var(--warm);
-    }
 
     @media (max-width: 600px) {
       main { padding: 2rem 1rem 4rem; gap: 3rem; }
       .img-card { width: 220px; height: 270px; }
     }
+    /* ── Lightbox ────────────────────────────────────── */
+    #lightbox {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(20,14,8,0.92);
+      z-index: 100;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+    }
+    #lightbox.open { display: flex; }
+    #lightbox img {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+      border-radius: 6px;
+      box-shadow: 0 24px 80px rgba(0,0,0,0.6);
+      animation: lb-in 0.18s ease;
+    }
+    @keyframes lb-in {
+      from { opacity: 0; transform: scale(0.95); }
+      to   { opacity: 1; transform: scale(1); }
+    }
+    #lightbox-close {
+      position: fixed;
+      top: 1rem;
+      right: 1.25rem;
+      background: none;
+      border: none;
+      color: #fff;
+      font-size: 2rem;
+      line-height: 1;
+      cursor: pointer;
+      opacity: 0.7;
+    }
+    #lightbox-close:hover { opacity: 1; }
   </style>
 </head>
 <body>
 
 <header>
   <h1>Knitting Projects</h1>
-  <p class="tagline">a collection of things made with yarn &amp; patience</p>
+  <p class="tagline">A collection of things made with yarn &amp; patience</p>
 </header>
 
 <main>
 ${projects_html}</main>
 
-<footer>
-  &copy; ${YEAR} &mdash; built from projects.md
-</footer>
+
+<div id="lightbox" role="dialog" aria-modal="true" aria-label="Image preview">
+  <button id="lightbox-close" aria-label="Close">&times;</button>
+  <img id="lightbox-img" src="" alt="" />
+</div>
 
 <script>
+  // Lightbox
+  const lightbox = document.getElementById('lightbox');
+  const lbImg    = document.getElementById('lightbox-img');
+  const lbClose  = document.getElementById('lightbox-close');
+
+  function openLightbox(src, alt) {
+    lbImg.src = src;
+    lbImg.alt = alt;
+    lightbox.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeLightbox() {
+    lightbox.classList.remove('open');
+    document.body.style.overflow = '';
+    lbImg.src = '';
+  }
+
+  document.querySelectorAll('.img-card img').forEach(img => {
+    img.addEventListener('click', () => openLightbox(img.src, img.alt));
+  });
+  lbClose.addEventListener('click', closeLightbox);
+  lightbox.addEventListener('click', e => { if (e.target === lightbox) closeLightbox(); });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLightbox(); });
+
   document.querySelectorAll('.scroll-track').forEach(track => {
     let isDown = false, startX, scrollLeft;
     track.addEventListener('mousedown', e => {

@@ -1,18 +1,39 @@
+## Green Tooth Sweater
+
+description: 
+images: photos/green-tooth-sweater
+
+---
+
+## Red Accent Sweater
+
+description: 
+images: photos/red-accent-sweater
+
+---
+
+## Shawl
+
+description: 
+images: photos/shawl
+
+---
+
 ## Cable Sweater
 
-description: TODO
+description: 
 images: photos/cable-sweater
 
 ---
 
 ## Brown Sweater
 
-description: TODO
+description: 
 images: photos/brown-sweater
 
 ---
 
-## Shawl
+## Pocket Sweater
 
-description: TODO
-images: photos/shawl
+description: 
+images: photos/pocket-sweater
