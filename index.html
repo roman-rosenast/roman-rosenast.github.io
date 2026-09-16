@@ -119,6 +119,20 @@
       font-size: 0.9rem;
     }
 
+    footer {
+      padding: 1rem 1rem 1rem;
+      text-align: center;
+      border-top: 1px solid var(--sand);
+      background: var(--warm);
+    }
+    footer img {
+      display: block;
+      max-width: 440px;
+      width: 100%;
+      height: auto;
+      margin: 0 auto;
+      border-radius: var(--card-r);
+    }
 
     @media (max-width: 600px) {
       main { padding: 2rem 1rem 4rem; gap: 3rem; }
@@ -312,6 +326,9 @@
 
 </main>
 
+<footer>
+  <img src="assets/knitting-animation.gif" alt="Knitting animation" loading="lazy" />
+</footer>
 
 <div id="lightbox" role="dialog" aria-modal="true" aria-label="Image preview">
   <button id="lightbox-close" aria-label="Close">&times;</button>
